@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.Commands.ExstendsIntake;
+import frc.robot.submodule.Commands.ExstendsIntake;
 
 // 8ft and 2.44 meters with the power given to the motors
 
@@ -35,15 +35,15 @@ public class Intake extends SubsystemBase{
 
     // Referencing motor controller object-
     // orange motors
-    // private final SparkMax ShooterMotor = new SparkMax(16, MotorType.kBrushless);
-    // private final SparkMax Indexer = new SparkMax(4, MotorType.kBrushless);
-    // private final RelativeEncoder Shooter_encoder = ShooterMotor.getEncoder();
-    // private final RelativeEncoder Indexer_Encoder = Indexer.getEncoder();
+    private final SparkMax ShooterMotor = new SparkMax(16, MotorType.kBrushless);
+    private final SparkMax Indexer = new SparkMax(4, MotorType.kBrushless);
+    private final RelativeEncoder Shooter_encoder = ShooterMotor.getEncoder();
+    private final RelativeEncoder Indexer_Encoder = Indexer.getEncoder();
 
     // black motors
-    private final SparkMax ShooterMotor = new SparkMax(15, MotorType.kBrushless);
-    private final RelativeEncoder Shooter_encoder = ShooterMotor.getEncoder();
-    private final TalonSRX Indexer = new TalonSRX(10);
+    // private final SparkMax ShooterMotor = new SparkMax(15, MotorType.kBrushless);
+    // private final RelativeEncoder Shooter_encoder = ShooterMotor.getEncoder();
+    // private final TalonSRX Indexer = new TalonSRX(10);
 
     // maybe shared?
     private final SparkMax Intake = new SparkMax(14, MotorType.kBrushless);
@@ -132,7 +132,7 @@ public class Intake extends SubsystemBase{
     }
 
     public void Indexer_motorSpeed(double speed){
-        Indexer.set(TalonSRXControlMode.PercentOutput, -speed);
+        Indexer.set(-speed);
     }
 
     public void MoveExstendIntakeSolenoid(boolean on){
