@@ -41,9 +41,9 @@ public class Intake extends SubsystemBase{
     // private final RelativeEncoder Indexer_Encoder = Indexer.getEncoder();
 
     // black motors
-    private final SparkMax ShooterMotor = new SparkMax(15, MotorType.kBrushless);
+    private final SparkMax ShooterMotor = new SparkMax(17, MotorType.kBrushless);
     private final RelativeEncoder Shooter_encoder = ShooterMotor.getEncoder();
-    private final SparkMax Indexer = new SparkMax(17,MotorType.kBrushless);
+    private final SparkMax Indexer = new SparkMax(15,MotorType.kBrushless);
 
     // maybe shared?
     private final SparkMax Intake = new SparkMax(14, MotorType.kBrushless);
@@ -132,7 +132,7 @@ public class Intake extends SubsystemBase{
     }
 
     public void Indexer_motorSpeed(double speed){
-        Indexer.set(-speed);
+        Indexer.set(speed);
     }
 
     public void MoveExstendIntakeSolenoid(boolean on){
