@@ -126,11 +126,11 @@ public class Intake extends SubsystemBase{
         return Intake_Encoder.getVelocity();
     }
 
-    public void Shooter_motorSpeed(double speed){
+    public void setShooter_motorSpeed(double speed){
         ShooterMotor.set(-speed);
     }
 
-    public void Indexer_motorSpeed(double speed){
+    public void setIndexer_motorSpeed(double speed){
         Indexer.set(-speed);
     }
 
@@ -144,15 +144,15 @@ public class Intake extends SubsystemBase{
         DropIntake_Solenoid.set(on);
     }
 
-    public void Shooter_motorVoltage(Voltage voltage){
+    public void setShooter_motorVoltage(Voltage voltage){
         ShooterMotor.setVoltage(voltage.times(1));
     }
 
-    public void Intake_motorSpeed(double speed){
+    public void setIntake_motorSpeed(double speed){
         Intake.set(speed);
     }
 
-    public double Intake_getSpeed(){
+    public double getIntake_Speed(){
      return Intake_Encoder.getVelocity();   
     }
 
@@ -171,7 +171,7 @@ public class Intake extends SubsystemBase{
           new SysIdRoutine.Config(),
           new SysIdRoutine.Mechanism(
               // Tell SysId how to plumb the driving voltage to the motor(s).
-              this::Shooter_motorVoltage,
+              this::setShooter_motorVoltage,
               // Tell SysId how to record a frame of data for each motor on the mechanism being
               // characterized.
               log -> {
