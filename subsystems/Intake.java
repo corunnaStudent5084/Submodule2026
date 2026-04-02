@@ -18,6 +18,7 @@ import edu.wpi.first.units.measure.MutAngularVelocity;
 import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -27,7 +28,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.Commands.ExstendsIntake;
 
 // 8ft and 2.44 meters with the power given to the motors
 
@@ -43,16 +43,14 @@ public class Intake extends SubsystemBase{
     // black motors
     private final SparkMax ShooterMotor = new SparkMax(17, MotorType.kBrushless);
     private final RelativeEncoder Shooter_encoder = ShooterMotor.getEncoder();
-    private final SparkMax Indexer = new SparkMax(15,MotorType.kBrushless);
-
-    // maybe shared?
+    private final TalonSRX Indexer = new TalonSRX(0);
+    private final TalonSRX MoveIntake = new TalonSRX(0);
     private final SparkMax Intake = new SparkMax(14, MotorType.kBrushless);
-        private final RelativeEncoder Intake_Encoder = Intake.getEncoder();
-    private final Solenoid ExstendIntake_solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
-    private final Solenoid DropIntake_Solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 1);
+    private final RelativeEncoder Intake_Encoder = Intake.getEncoder();    
 
-    private final Compressor Compressor = new Compressor(PneumaticsModuleType.CTREPCM);
-    
+    private final DigitalInput Out_Switch = new DigitalInput(0);
+    private final DigitalInput In_Swich = new DigitalInput(1); 
+
     // public void TempIntake_setSpeed(double speed){
     //     TempIntake.set(TalonSRXControlMode.PercentOutput, speed);
     // }
@@ -66,58 +64,46 @@ public class Intake extends SubsystemBase{
     // }
 
 
+    //keep this or else break!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    public void DisableSolenoids(){
+
+    }
 
     //This command will run the intake of the robot. Then set to 0 speed when false.
+    public Command IntakePrep(){
+            return runEnd(()->setMoveIndex_Speed(true),()-> MoveIntake.set(TalonSRXControlMode.PercentOutput, 0)).until(() -> Out_Switch.get());
+    }
     
-    public Command Intakeforward(){
+    public void setMoveIndex_Speed(boolean Forward){
+        if(Forward == true){
+        MoveIntake.set(TalonSRXControlMode.PercentOutput,0.25 );
+        }
+        else{
+        MoveIntake.set(TalonSRXControlMode.PercentOutput,-0.25 );
+        }
+    }
 
-        return runOnce(() ->MoveExstendIntakeSolenoid(true));
+  public boolean Exstended_SolenoidState(){
 
-    } 
-
-    public Command DropIntake(){
-
-        return runOnce(() ->DropIntake_Solenoid.set(true)).onlyIf(() ->Exstended_SolenoidState());
+        return true;
 
     }
 
-    public Command PickUpIntake(){
 
-        return runOnce(() ->DropIntake_Solenoid.set(false));
-    }
-
-    public Command OutAndDrop(){
-        return runOnce(() ->ExstendIntake_solenoid.set(true)).andThen(Commands.waitSeconds(2)).andThen(DropIntake());
-    }
-
-    public Command UpAndIn(){
-        return PickUpIntake().andThen(Commands.waitSeconds (1)).andThen(runOnce(() ->ExstendIntake_solenoid.set(false)).unless(() ->DropIntake_SolenoidState()));
-    }
-
-    public void DisableSolenoids(){
-        ExstendIntake_solenoid.set(false);
-        DropIntake_Solenoid.set(false);
-    }
-
-    @Override
+ @Override
     public void periodic() {
         SmartDashboard.putNumber("Current RPM", getShooter_motorSpeed());
         // SmartDashboard.putNumber("TempRPM", getTempShooter_speed());
     }
-    
-
-
     //methods that will run the motors.
     //Curerently shooter can shoot successfully from 8ft and 2.44 meters.
-    public boolean Exstended_SolenoidState(){
-
-        return ExstendIntake_solenoid.get();
-
-    }
-
-    public boolean DropIntake_SolenoidState(){
-        return DropIntake_Solenoid.get();
-    }
+  
+public Command OutAndDrop(){
+    return Commands.none();
+}
+public Command UpAndIn(){
+    return Commands.none();
+}
 
     public double getShooter_motorSpeed(){
         return Shooter_encoder.getVelocity();
@@ -127,33 +113,25 @@ public class Intake extends SubsystemBase{
         return Intake_Encoder.getVelocity();
     }
 
-    public void Shooter_motorSpeed(double speed){
+    public void setShooter_motorSpeed(double speed){
         ShooterMotor.set(-speed);
     }
 
-    public void Indexer_motorSpeed(double speed){
-        Indexer.set(speed);
+    public void setIndexer_motorSpeed(double speed){
+        Indexer.set(TalonSRXControlMode.PercentOutput,speed);
     }
 
-    public void MoveExstendIntakeSolenoid(boolean on){
-        
-        ExstendIntake_solenoid.set(on);
-    }
 
-     public void MoveDropIntakeSolenoid(boolean on){
 
-        DropIntake_Solenoid.set(on);
-    }
-
-    public void Shooter_motorVoltage(Voltage voltage){
+    public void setShooter_motorVoltage(Voltage voltage){
         ShooterMotor.setVoltage(voltage.times(1));
     }
 
-    public void Intake_motorSpeed(double speed){
+    public void setIntake_motorSpeed(double speed){
         Intake.set(speed);
     }
 
-    public double Intake_getSpeed(){
+    public double getIntake_Speed(){
      return Intake_Encoder.getVelocity();   
     }
 
@@ -172,7 +150,7 @@ public class Intake extends SubsystemBase{
           new SysIdRoutine.Config(),
           new SysIdRoutine.Mechanism(
               // Tell SysId how to plumb the driving voltage to the motor(s).
-              this::Shooter_motorVoltage,
+              this::setShooter_motorVoltage,
               // Tell SysId how to record a frame of data for each motor on the mechanism being
               // characterized.
               log -> {
