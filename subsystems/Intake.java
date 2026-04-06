@@ -64,7 +64,11 @@ public class Intake extends SubsystemBase{
     //     TempShooter.setVoltage(volts.times(1));
     // }
 
+    public Command IntakePrep(){
 
+        return runOnce(() ->MoveExstendIntakeSolenoid(true));
+
+    }
 
     //This command will run the intake of the robot. Then set to 0 speed when false.
     
