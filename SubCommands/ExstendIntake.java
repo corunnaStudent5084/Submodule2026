@@ -5,11 +5,11 @@ import frc.robot.submodule.subsystems.Intake;
 
 // DO NOT MOVE WHAT IS ABOVE!! >:|
 
-public class ExstendsIntake extends Command {
+public class ExstendIntake extends Command {
 
     Intake subsystem;
 
-    public ExstendsIntake(Intake subsystem){
+    public ExstendIntake(Intake subsystem){
 
         this.subsystem = subsystem;
 
