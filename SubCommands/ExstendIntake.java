@@ -1,4 +1,4 @@
-package frc.robot.submodule.SubCommands;
+package frc.robot.submodule.subCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.submodule.subsystems.Intake;
