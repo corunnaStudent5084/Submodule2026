@@ -10,13 +10,12 @@ public class ExstendIntake extends Command{
 
 
 @Override public void execute() {
-    execute();
+   subsystem.setMoveIndex_Speed(true);
 }
 
 @Override
 public void end(boolean interrupted) {
-    // TODO Auto-generated method stub
-    super.end(interrupted);
+     subsystem.setMoveIndex_Speed(false);
 }
 
 
