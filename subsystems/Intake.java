@@ -50,6 +50,11 @@ public class Intake extends SubsystemBase{
 
     private final DigitalInput Out_Switch = new DigitalInput(0);
     private final DigitalInput In_Swich = new DigitalInput(1); 
+    public enum MotorState{
+        forward,
+        backward,
+        off
+    }
 
     // public void TempIntake_setSpeed(double speed){
     //     TempIntake.set(TalonSRXControlMode.PercentOutput, speed);
@@ -113,12 +118,33 @@ public Command UpAndIn(){
         return Intake_Encoder.getVelocity();
     }
 
-    public void setShooter_motorSpeed(double speed){
-        ShooterMotor.set(-speed);
+    public void setShooter_motorSpeed(MotorState state){
+        switch (state){
+        case off:
+        ShooterMotor.set(0);
+        break;
+        case forward:
+        ShooterMotor.set(-0.8);
+        break;
+        case backward:
+        ShooterMotor.set(0.8);
+        break;
+        }
+        
     }
 
-    public void setIndexer_motorSpeed(double speed){
-        Indexer.set(TalonSRXControlMode.PercentOutput,speed);
+    public void setIndexer_motorSpeed(MotorState state){
+        switch (state){
+        case off:
+        Indexer.set(TalonSRXControlMode.PercentOutput,0);
+        break;
+        case forward:
+        Indexer.set(TalonSRXControlMode.PercentOutput,0.8);
+        break;
+        case backward:
+        Indexer.set(TalonSRXControlMode.PercentOutput,0.8);
+        break;
+        }
     }
 
 
@@ -127,8 +153,18 @@ public Command UpAndIn(){
         ShooterMotor.setVoltage(voltage.times(1));
     }
 
-    public void setIntake_motorSpeed(double speed){
-        Intake.set(speed);
+    public void setIntake_motorSpeed(MotorState state){
+        switch (state){
+        case off:
+        Intake.set(0);
+        break;
+        case forward:
+        Intake.set(-0.8);
+        break;
+        case backward:
+        Intake.set(0.8);
+        break;
+        }
     }
 
     public double getIntake_Speed(){
