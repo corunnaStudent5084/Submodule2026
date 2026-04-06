@@ -46,6 +46,7 @@ public class Intake extends SubsystemBase{
     private final TalonSRX Indexer = new TalonSRX(0);
     private final TalonSRX MoveIntake = new TalonSRX(0);
     private final SparkMax Intake = new SparkMax(14, MotorType.kBrushless);
+    private final SparkMax FeedShooter = new SparkMax(0, MotorType.kBrushless);
     private final RelativeEncoder Intake_Encoder = Intake.getEncoder();    
 
     private final DigitalInput Out_Switch = new DigitalInput(0);
@@ -135,6 +136,17 @@ public Command UpAndIn(){
         case backward:
         ShooterMotor.set(0.8);
         break;
+        }
+        
+    }
+    public void setFeedShooter_motorSpeed(MotorState state){
+        switch (state) {
+            case forward:
+                 FeedShooter.set(0.5);
+                break;
+            case off:
+                 FeedShooter.set(0);
+                break;
         }
         
     }
