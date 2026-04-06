@@ -52,6 +52,11 @@ public class Intake extends SubsystemBase{
 
     private final Compressor Compressor = new Compressor(PneumaticsModuleType.CTREPCM);
     
+        public enum MotorState{
+        forward,
+        backward,
+        off
+    }
     // public void TempIntake_setSpeed(double speed){
     //     TempIntake.set(TalonSRXControlMode.PercentOutput, speed);
     // }
@@ -130,12 +135,32 @@ public class Intake extends SubsystemBase{
         return Intake_Encoder.getVelocity();
     }
 
-    public void setShooter_motorSpeed(double speed){
-        ShooterMotor.set(-speed);
+    public void setShooter_motorSpeed(MotorState state){
+       switch (state){
+        case off:
+        ShooterMotor.set(0);
+        break;
+        case forward:
+        ShooterMotor.set(-0.8);
+        break;
+        case backward:
+        ShooterMotor.set(0.8);
+        break;
+        }
     }
 
-    public void setIndexer_motorSpeed(double speed){
-        Indexer.set(-speed);
+    public void setIndexer_motorSpeed(MotorState state){
+        switch (state){
+        case off:
+        Indexer.set(0);
+        break;
+        case forward:
+        Indexer.set(0.8);
+        break;
+        case backward:
+        Indexer.set(0.8);
+        break;
+        }
     }
 
     public void MoveExstendIntakeSolenoid(boolean on){
@@ -152,8 +177,19 @@ public class Intake extends SubsystemBase{
         ShooterMotor.setVoltage(voltage.times(1));
     }
 
-    public void setIntake_motorSpeed(double speed){
-        Intake.set(speed);
+    public void setIntake_motorSpeed(MotorState state){
+        switch (state){
+        case off:
+        Intake.set(0);
+        break;
+        case forward:
+        Intake.set(-0.8);
+        break;
+        case backward:
+        Intake.set(0.8);
+        break;
+        }
+
     }
 
     public double getIntake_Speed(){
