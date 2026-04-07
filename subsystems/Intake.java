@@ -113,7 +113,7 @@ public class Intake extends SubsystemBase{
         // SmartDashboard.putNumber("TempRPM", getTempShooter_speed());
     }
     
-
+    public void setFeedShooter_motorSpeed(MotorState state){}
 
     //methods that will run the motors.
     //Curerently shooter can shoot successfully from 8ft and 2.44 meters.
