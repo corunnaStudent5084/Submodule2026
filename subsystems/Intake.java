@@ -8,6 +8,8 @@ import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
+import java.util.function.Consumer;
+
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.RelativeEncoder;
@@ -72,12 +74,11 @@ public class Intake extends SubsystemBase{
 
     //keep this or else break!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public void DisableSolenoids(){
-
     }
 
     //This command will run the intake of the robot. Then set to 0 speed when false.
     public Command IntakePrep(){
-            return runEnd(()->setMoveIndex_Speed(true),()-> MoveIntake.set(TalonSRXControlMode.PercentOutput, 0)).until(() -> Out_Switch.get());
+            return runEnd(()->MoveIntake.set(TalonSRXControlMode.PercentOutput, 0.25),()-> MoveIntake.set(TalonSRXControlMode.PercentOutput, 0)).until(() -> Out_Switch.get());
     }
     
     public void setMoveIndex_Speed(boolean Forward){
@@ -111,10 +112,10 @@ public class Intake extends SubsystemBase{
     //Curerently shooter can shoot successfully from 8ft and 2.44 meters.
   
 public Command OutAndDrop(){
-    return Commands.none();
+    return Commands.runEnd(() -> setMoveIndex_motorSpeed(MotorState.forward), () -> setMoveIndex_motorSpeed(MotorState.off)).until(() -> !Out_Switch.get());
 }
 public Command UpAndIn(){
-    return Commands.none();
+    return Commands.runEnd(() -> setMoveIndex_motorSpeed(MotorState.backward), () -> setMoveIndex_motorSpeed(MotorState.off)).until(() -> !In_Swich.get());
 }
 
     public double getShooter_motorSpeed(){
@@ -152,16 +153,33 @@ public Command UpAndIn(){
     }
 
     public void setIndexer_motorSpeed(MotorState state){
-        switch (state){
-        case off:
-        Indexer.set(TalonSRXControlMode.PercentOutput,0);
-        break;
-        case forward:
-        Indexer.set(TalonSRXControlMode.PercentOutput,0.8);
-        break;
-        case backward:
-        Indexer.set(TalonSRXControlMode.PercentOutput,0.8);
-        break;
+        switch (state) {
+            case off:
+                Indexer.set(TalonSRXControlMode.PercentOutput,0);
+                break;
+            case forward:
+                Indexer.set(TalonSRXControlMode.PercentOutput,0.8);
+                break;
+            case backward:
+                Indexer.set(TalonSRXControlMode.PercentOutput,0.8);
+                break;
+        }
+    }
+
+    public void setMoveIndex_motorSpeed(MotorState state) {
+        switch (state) {
+            case off:
+                MoveIntake.set(TalonSRXControlMode.PercentOutput, 0);
+                break;
+            case forward:
+                MoveIntake.set(TalonSRXControlMode.PercentOutput, 0.25);
+                break;
+            case backward:
+                MoveIntake.set(TalonSRXControlMode.PercentOutput, -0.25);
+                break;
+            default:
+                MoveIntake.set(TalonSRXControlMode.PercentOutput, 0);
+                break;
         }
     }
 
