@@ -94,6 +94,7 @@ public class Intake extends SubsystemBase{
             }
                 
         }
+        MoveIntake.set(TalonSRXControlMode.PercentOutput, 0);
     }
 
   public boolean Exstended_SolenoidState(){
