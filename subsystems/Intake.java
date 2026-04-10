@@ -82,19 +82,19 @@ public class Intake extends SubsystemBase{
     }
     
     public void setMoveIndex_Speed(boolean Forward){
-        if(Forward == true){
-            while(In_Swich.get()){
-            MoveIntake.set(TalonSRXControlMode.PercentOutput,0.25);
-            }
-        }
-        else{
-            while (Out_Switch.get()){
+        // if(Forward == true){
+        //     while(In_Swich.get()){
+        //     MoveIntake.set(TalonSRXControlMode.PercentOutput,0.25);
+        //     }
+        // }
+        // else{
+        //     while (Out_Switch.get()){
 
-             MoveIntake.set(TalonSRXControlMode.PercentOutput,-0.25);    
-            }
+        //      MoveIntake.set(TalonSRXControlMode.PercentOutput,-0.25);    
+        //     }
                 
-        }
-        MoveIntake.set(TalonSRXControlMode.PercentOutput, 0);
+        // }
+        // MoveIntake.set(TalonSRXControlMode.PercentOutput, 0);
     }
 
   public boolean Exstended_SolenoidState(){
