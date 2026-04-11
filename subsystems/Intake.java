@@ -45,8 +45,8 @@ public class Intake extends SubsystemBase{
     // black motors
     private final SparkMax ShooterMotor = new SparkMax(1, MotorType.kBrushless);
     private final RelativeEncoder Shooter_encoder = ShooterMotor.getEncoder();
-    private final TalonSRX Indexer = new TalonSRX(11);
-    private final TalonSRX MoveIntake = new TalonSRX(12);
+    private final TalonSRX Indexer = new TalonSRX(12);
+    private final TalonSRX MoveIntake = new TalonSRX(11);
     private final SparkMax Intake = new SparkMax(3, MotorType.kBrushless);
     private final SparkMax FeedShooter = new SparkMax(2, MotorType.kBrushless);
     private final RelativeEncoder Intake_Encoder = Intake.getEncoder();    
@@ -71,6 +71,12 @@ public class Intake extends SubsystemBase{
     //     TempShooter.setVoltage(volts.times(1));
     // }
 
+    public Command TESTMOTOR(){
+        return runEnd(()->setIntake_motorSpeed(MotorState.forward), ()->setIntake_motorSpeed(MotorState.off));
+    }
+    public Command IntakeOnly(){
+        return runEnd(()->setIntake_motorSpeed(MotorState.forward),()->setIntake_motorSpeed(MotorState.off));
+    }
 
     //keep this or else break!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public void DisableSolenoids(){
@@ -110,6 +116,8 @@ public class Intake extends SubsystemBase{
         // SmartDashboard.putNumber("TempRPM", getTempShooter_speed());
         SmartDashboard.putNumber("AMP Out", MoveIntake.getStatorCurrent());
         SmartDashboard.putNumber("SUPPLY CURRENT", MoveIntake.getSupplyCurrent());
+        SmartDashboard.putBoolean("IN_Swich", In_Swich.get());
+        SmartDashboard.putBoolean("IN_Swich", Out_Switch.get());
     }
     //methods that will run the motors.
     //Curerently shooter can shoot successfully from 8ft and 2.44 meters.
@@ -146,7 +154,7 @@ public Command UpAndIn(){
     public void setFeedShooter_motorSpeed(MotorState state){
         switch (state) {
             case forward:
-                 FeedShooter.set(0.5);
+                 FeedShooter.set(-0.25);
                 break;
             case off:
                  FeedShooter.set(0);
@@ -161,10 +169,10 @@ public Command UpAndIn(){
                 Indexer.set(TalonSRXControlMode.PercentOutput,0);
                 break;
             case forward:
-                Indexer.set(TalonSRXControlMode.PercentOutput,0.8);
+                Indexer.set(TalonSRXControlMode.PercentOutput,0.4);
                 break;
             case backward:
-                Indexer.set(TalonSRXControlMode.PercentOutput,0.8);
+                Indexer.set(TalonSRXControlMode.PercentOutput,0.4);
                 break;
         }
     }
@@ -175,10 +183,10 @@ public Command UpAndIn(){
                 MoveIntake.set(TalonSRXControlMode.PercentOutput, 0);
                 break;
             case forward:
-                MoveIntake.set(TalonSRXControlMode.PercentOutput, 0.25);
+                MoveIntake.set(TalonSRXControlMode.PercentOutput, 0.2);
                 break;
             case backward:
-                MoveIntake.set(TalonSRXControlMode.PercentOutput, -0.25);
+                MoveIntake.set(TalonSRXControlMode.PercentOutput, -0.2);
                 break;
             default:
                 MoveIntake.set(TalonSRXControlMode.PercentOutput, 0);
@@ -198,10 +206,10 @@ public Command UpAndIn(){
         Intake.set(0);
         break;
         case forward:
-        Intake.set(-0.8);
+        Intake.set(-0.35);
         break;
         case backward:
-        Intake.set(0.8);
+        Intake.set(0.35);
         break;
         }
     }
