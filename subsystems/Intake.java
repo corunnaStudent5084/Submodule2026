@@ -43,12 +43,12 @@ public class Intake extends SubsystemBase{
     // private final RelativeEncoder Indexer_Encoder = Indexer.getEncoder();
 
     // black motors
-    private final SparkMax ShooterMotor = new SparkMax(17, MotorType.kBrushless);
+    private final SparkMax ShooterMotor = new SparkMax(1, MotorType.kBrushless);
     private final RelativeEncoder Shooter_encoder = ShooterMotor.getEncoder();
-    private final TalonSRX Indexer = new TalonSRX(0);
-    private final TalonSRX MoveIntake = new TalonSRX(0);
-    private final SparkMax Intake = new SparkMax(14, MotorType.kBrushless);
-    private final SparkMax FeedShooter = new SparkMax(0, MotorType.kBrushless);
+    private final TalonSRX Indexer = new TalonSRX(11);
+    private final TalonSRX MoveIntake = new TalonSRX(12);
+    private final SparkMax Intake = new SparkMax(3, MotorType.kBrushless);
+    private final SparkMax FeedShooter = new SparkMax(2, MotorType.kBrushless);
     private final RelativeEncoder Intake_Encoder = Intake.getEncoder();    
 
     private final DigitalInput Out_Switch = new DigitalInput(0);
@@ -108,6 +108,8 @@ public class Intake extends SubsystemBase{
     public void periodic() {
         SmartDashboard.putNumber("Current RPM", getShooter_motorSpeed());
         // SmartDashboard.putNumber("TempRPM", getTempShooter_speed());
+        SmartDashboard.putNumber("AMP Out", MoveIntake.getStatorCurrent());
+        SmartDashboard.putNumber("SUPPLY CURRENT", MoveIntake.getSupplyCurrent());
     }
     //methods that will run the motors.
     //Curerently shooter can shoot successfully from 8ft and 2.44 meters.
