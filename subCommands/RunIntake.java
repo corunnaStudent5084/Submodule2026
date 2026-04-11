@@ -19,7 +19,7 @@ public class RunIntake extends Command {
     @Override
     public void execute() {
         // intakesub.setShooter_motorSpeed(0.875);
-            intakesub.setIndexer_motorSpeed(MotorState.forward);
+            // intakesub.setIndexer_motorSpeed(MotorState.forward);
             intakesub.setIntake_motorSpeed(MotorState.forward);
     }
 
@@ -27,7 +27,7 @@ public class RunIntake extends Command {
     @Override
     public void end(boolean interrupted) {
         // intakesub.setShooter_motorSpeed(0);
-        intakesub.setIndexer_motorSpeed(MotorState.off);
+        // intakesub.setIndexer_motorSpeed(MotorState.off);
         intakesub.setIntake_motorSpeed(MotorState.off);
     }
 

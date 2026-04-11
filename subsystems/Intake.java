@@ -56,7 +56,8 @@ public class Intake extends SubsystemBase{
     public enum MotorState{
         forward,
         backward,
-        off
+        off,
+        FULLSPEEDAHEAD
     }
 
     // public void TempIntake_setSpeed(double speed){
@@ -72,12 +73,18 @@ public class Intake extends SubsystemBase{
     // }
 
     public Command TESTMOTOR(){
-        return runEnd(()->setIntake_motorSpeed(MotorState.forward), ()->setIntake_motorSpeed(MotorState.off));
+        return runEnd(()->setFeedShooter_motorSpeed(MotorState.forward), ()->setFeedShooter_motorSpeed(MotorState.off));
     }
     public Command IntakeOnly(){
         return runEnd(()->setIntake_motorSpeed(MotorState.forward),()->setIntake_motorSpeed(MotorState.off));
     }
+    public Command intakeOut(){
+        return runEnd(()-> setIntake_motorSpeed(MotorState.backward), ()->setIntake_motorSpeed(MotorState.off));
+    }
 
+    public Command FULL_INTAKE(){
+        return runEnd(()->setIntake_motorSpeed(MotorState.FULLSPEEDAHEAD), ()->setIntake_motorSpeed(MotorState.off));
+    }
     //keep this or else break!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public void DisableSolenoids(){
     }
@@ -117,16 +124,16 @@ public class Intake extends SubsystemBase{
         SmartDashboard.putNumber("AMP Out", MoveIntake.getStatorCurrent());
         SmartDashboard.putNumber("SUPPLY CURRENT", MoveIntake.getSupplyCurrent());
         SmartDashboard.putBoolean("IN_Swich", In_Swich.get());
-        SmartDashboard.putBoolean("IN_Swich", Out_Switch.get());
+        SmartDashboard.putBoolean("Out_Swich", Out_Switch.get());
     }
     //methods that will run the motors.
     //Curerently shooter can shoot successfully from 8ft and 2.44 meters.
   
 public Command OutAndDrop(){
-    return Commands.runEnd(() -> setMoveIndex_motorSpeed(MotorState.forward), () -> setMoveIndex_motorSpeed(MotorState.off)).until(() -> !Out_Switch.get());
+    return Commands.runEnd(() -> setMoveIndex_motorSpeed(MotorState.forward), () -> setMoveIndex_motorSpeed(MotorState.off)).until(() -> Out_Switch.get());
 }
 public Command UpAndIn(){
-    return Commands.runEnd(() -> setMoveIndex_motorSpeed(MotorState.backward), () -> setMoveIndex_motorSpeed(MotorState.off)).until(() -> !In_Swich.get());
+    return Commands.runEnd(() -> setMoveIndex_motorSpeed(MotorState.backward), () -> setMoveIndex_motorSpeed(MotorState.off)).until(() -> In_Swich.get());
 }
 
     public double getShooter_motorSpeed(){
@@ -169,10 +176,10 @@ public Command UpAndIn(){
                 Indexer.set(TalonSRXControlMode.PercentOutput,0);
                 break;
             case forward:
-                Indexer.set(TalonSRXControlMode.PercentOutput,0.4);
+                Indexer.set(TalonSRXControlMode.PercentOutput,0.35);
                 break;
             case backward:
-                Indexer.set(TalonSRXControlMode.PercentOutput,0.4);
+                Indexer.set(TalonSRXControlMode.PercentOutput,-0.35);
                 break;
         }
     }
@@ -183,10 +190,10 @@ public Command UpAndIn(){
                 MoveIntake.set(TalonSRXControlMode.PercentOutput, 0);
                 break;
             case forward:
-                MoveIntake.set(TalonSRXControlMode.PercentOutput, 0.2);
+                MoveIntake.set(TalonSRXControlMode.PercentOutput, 0.4);
                 break;
             case backward:
-                MoveIntake.set(TalonSRXControlMode.PercentOutput, -0.2);
+                MoveIntake.set(TalonSRXControlMode.PercentOutput, -0.4);
                 break;
             default:
                 MoveIntake.set(TalonSRXControlMode.PercentOutput, 0);
@@ -206,10 +213,13 @@ public Command UpAndIn(){
         Intake.set(0);
         break;
         case forward:
-        Intake.set(-0.35);
+        Intake.set(-0.6);
         break;
         case backward:
-        Intake.set(0.35);
+        Intake.set(0.6);
+        break;
+        case FULLSPEEDAHEAD:
+        Intake.set(1);
         break;
         }
     }
