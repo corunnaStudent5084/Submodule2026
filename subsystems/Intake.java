@@ -10,6 +10,7 @@ import static edu.wpi.first.units.Units.Volts;
 
 import java.util.function.Consumer;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.RelativeEncoder;
@@ -59,6 +60,13 @@ public class Intake extends SubsystemBase{
         off,
         FULLSPEEDAHEAD
     }
+
+    public Intake(){
+
+        MoveIntake.setNeutralMode(NeutralMode.Brake);
+
+    }
+
 
     // public void TempIntake_setSpeed(double speed){
     //     TempIntake.set(TalonSRXControlMode.PercentOutput, speed);
@@ -177,10 +185,10 @@ public Command UpAndIn(){
                 Indexer.set(TalonSRXControlMode.PercentOutput,0);
                 break;
             case forward:
-                Indexer.set(TalonSRXControlMode.PercentOutput,0.40);
+                Indexer.set(TalonSRXControlMode.PercentOutput,0.60);
                 break;
             case backward:
-                Indexer.set(TalonSRXControlMode.PercentOutput,-0.40);
+                Indexer.set(TalonSRXControlMode.PercentOutput,-0.60);
                 break;
         }
     }
