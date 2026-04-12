@@ -52,7 +52,7 @@ public class Intake extends SubsystemBase{
     private final RelativeEncoder Intake_Encoder = Intake.getEncoder();    
 
     private final DigitalInput Out_Switch = new DigitalInput(0);
-    private final DigitalInput In_Swich = new DigitalInput(1); 
+    private final DigitalInput In_Swich = new DigitalInput(8); 
     public enum MotorState{
         forward,
         backward,
@@ -73,7 +73,7 @@ public class Intake extends SubsystemBase{
     // }
 
     public Command TESTMOTOR(){
-        return runEnd(()->setFeedShooter_motorSpeed(MotorState.forward), ()->setFeedShooter_motorSpeed(MotorState.off));
+        return runEnd(()->setIndexer_motorSpeed(MotorState.forward), ()->setIndexer_motorSpeed(MotorState.off));
     }
     public Command IntakeOnly(){
         return runEnd(()->setIntake_motorSpeed(MotorState.forward),()->setIntake_motorSpeed(MotorState.off));
@@ -120,6 +120,7 @@ public class Intake extends SubsystemBase{
  @Override
     public void periodic() {
         SmartDashboard.putNumber("Current RPM", getShooter_motorSpeed());
+        SmartDashboard.putNumber("Current Intake RPM", getIntake_Speed());
         // SmartDashboard.putNumber("TempRPM", getTempShooter_speed());
         SmartDashboard.putNumber("AMP Out", MoveIntake.getStatorCurrent());
         SmartDashboard.putNumber("SUPPLY CURRENT", MoveIntake.getSupplyCurrent());
@@ -176,10 +177,10 @@ public Command UpAndIn(){
                 Indexer.set(TalonSRXControlMode.PercentOutput,0);
                 break;
             case forward:
-                Indexer.set(TalonSRXControlMode.PercentOutput,0.35);
+                Indexer.set(TalonSRXControlMode.PercentOutput,0.40);
                 break;
             case backward:
-                Indexer.set(TalonSRXControlMode.PercentOutput,-0.35);
+                Indexer.set(TalonSRXControlMode.PercentOutput,-0.40);
                 break;
         }
     }
@@ -190,10 +191,10 @@ public Command UpAndIn(){
                 MoveIntake.set(TalonSRXControlMode.PercentOutput, 0);
                 break;
             case forward:
-                MoveIntake.set(TalonSRXControlMode.PercentOutput, 0.4);
+                MoveIntake.set(TalonSRXControlMode.PercentOutput, 0.5);
                 break;
             case backward:
-                MoveIntake.set(TalonSRXControlMode.PercentOutput, -0.4);
+                MoveIntake.set(TalonSRXControlMode.PercentOutput, -0.5);
                 break;
             default:
                 MoveIntake.set(TalonSRXControlMode.PercentOutput, 0);
@@ -213,15 +214,18 @@ public Command UpAndIn(){
         Intake.set(0);
         break;
         case forward:
-        Intake.set(-0.6);
+        Intake.set(-0.65);
         break;
         case backward:
-        Intake.set(0.6);
+        Intake.set(0.65);
         break;
         case FULLSPEEDAHEAD:
         Intake.set(1);
         break;
         }
+    }
+    public void SetIntake_Voltage(double volts){
+        Intake.setVoltage(volts);
     }
 
     public double getIntake_Speed(){
