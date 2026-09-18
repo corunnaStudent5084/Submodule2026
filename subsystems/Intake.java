@@ -222,10 +222,10 @@ public Command UpAndIn(){
         Intake.set(0);
         break;
         case forward:
-        Intake.set(-0.65);
+        Intake.set(-0.4);
         break;
         case backward:
-        Intake.set(0.65);
+        Intake.set(0.4);
         break;
         case FULLSPEEDAHEAD:
         Intake.set(1);
